@@ -8,6 +8,7 @@ import { TollbarComponent } from './components/tollbar/tollbar.component';
 import { MaterialModule } from './material/material.module';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
 import { TodoContainerComponent } from './todo-container/todo-container.component';
+import { TodoComponent } from './components/todo/todo.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { TodoContainerComponent } from './todo-container/todo-container.componen
     TollbarComponent,
     TodoListComponent,
     TodoContainerComponent,
+    TodoComponent,
   ],
   imports: [
     BrowserModule,
