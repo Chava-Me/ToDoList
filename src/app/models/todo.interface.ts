@@ -4,5 +4,6 @@ export interface Itodo{
     description:string;
     isCompleted:boolean;
     isArchived:boolean;
-    endDate: Date | number | string
+    endDate: Date | number | string;
+    selected:boolean;
 }

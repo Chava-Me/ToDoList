@@ -9,6 +9,8 @@ import { MaterialModule } from './material/material.module';
 import { TodoListComponent } from './components/todo-list/todo-list.component';
 import { TodoContainerComponent } from './todo-container/todo-container.component';
 import { TodoComponent } from './components/todo/todo.component';
+import { NewTodoComponent } from './components/new-todo/new-todo.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,12 +19,14 @@ import { TodoComponent } from './components/todo/todo.component';
     TodoListComponent,
     TodoContainerComponent,
     TodoComponent,
+    NewTodoComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

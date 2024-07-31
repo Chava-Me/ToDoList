@@ -1,14 +1,15 @@
 <div class="todo-list">
     <div class="item-wrap" *ngFor="let item of todos">
-    <mat-card appearance="outlined">
+      <ng-container *ngIf="!item.isArchived">
+    <mat-card appearance="outlined" (click)="onClick(item)"
+    [ngClass]="{selected:item.selected, complete:item.isCompleted}">
         <mat-card-content>
             <mat-card-title>{{item.title}}</mat-card-title>
             <mat-card-subtitle>{{item.description}}</mat-card-subtitle>
-            <button mat-raised-button>Complete</button>
-            <button mat-raised-button>Archive</button>
         </mat-card-content>
       </mat-card>
       <mat-divider></mat-divider>
+    </ng-container>
     </div>
 </div> 
 

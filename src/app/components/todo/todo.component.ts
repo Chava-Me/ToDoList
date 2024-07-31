@@ -17,7 +17,19 @@ export class TodoComponent implements OnInit {
     this._todo=todo;
   }
 
+  get todo(){
+    return this._todo;
+  }
+
   ngOnInit(): void {
+  }
+
+  onComplete(){
+this.todo.isCompleted=true;
+  }
+
+  onArchive(){
+    this.todo.isArchived=true;
   }
 
 }
