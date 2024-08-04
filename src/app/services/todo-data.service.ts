@@ -44,9 +44,15 @@ return this._todo_subject.asObservable();
     return this._selected_subject.asObservable();
       }
 
-      setSelected(todo){
+      setSelected(todo:Itodo){
         return this._selected_subject.next(todo);
           }
+
+        addNewTodo(todo:Itodo){
+this._todo_subject.value.push(todo);
+this._todo_subject.next(this._todo_subject.value);
         }
+        }
+
 
 
