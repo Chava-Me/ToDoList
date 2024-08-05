@@ -8,28 +8,28 @@ import { Itodo } from 'src/app/models/todo.interface';
 })
 export class TodoComponent implements OnInit {
 
-  private _todo:Itodo
+  private _todo: Itodo
 
   constructor() { }
-  
 
-  @Input() set todo(todo:Itodo){
-    this._todo=todo;
+
+  @Input() set todo(todo: Itodo) {
+    this._todo = todo;
   }
 
-  get todo(){
+  get todo() {
     return this._todo;
   }
 
   ngOnInit(): void {
   }
 
-  onComplete(){
-this.todo.isCompleted=true;
+  onComplete() {
+    this.todo.isCompleted = true;
   }
 
-  onArchive(){
-    this.todo.isArchived=true;
+  onArchive() {
+    this.todo.isArchived = true;
   }
 
 }

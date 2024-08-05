@@ -10,22 +10,18 @@ import { TodoDataService } from 'src/app/services/todo-data.service';
 })
 export class TodoListComponent {
 
-  @Input() todos:Itodo[];
-  
-  constructor(private dataservice:TodoDataService) { }
+  @Input() todos: Itodo[];
+
+  constructor(private dataservice: TodoDataService) { }
 
 
-  onClick(item){
-    this.todos.forEach(e=>e.selected=false)
+  onClick(item) {
+    this.todos.forEach(e => e.selected = false)
     this.dataservice.setSelected(item);
-    item.selected=true;
+    item.selected = true;
 
   }
 
   ngOnInit(): void {
- 
-    
   }
-
-
 }

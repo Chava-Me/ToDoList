@@ -12,32 +12,34 @@ import { TodoDataService } from 'src/app/services/todo-data.service';
 })
 export class NewTodoComponent implements OnInit {
 
-  myForm:FormGroup = this.fb.group({
+  minDate = new Date();
+
+  myForm: FormGroup = this.fb.group({
     title: ['', [Validators.required]],
     description: ['', [Validators.required]],
     date: ['', [Validators.required]]
   });
 
-  constructor( public dialog:MatDialog,
+  constructor(public dialog: MatDialog,
     private fb: FormBuilder,
-    private dataservice:TodoDataService
+    private dataservice: TodoDataService
   ) {
-   
+
   }
 
   ngOnInit(): void {
-    
+
   }
 
   onSubmit(): void {
     if (this.myForm.valid) {
-      let newTodo:Itodo={
-        description:this.myForm.value['description'],
-        title:this.myForm.value['title'],
-        endDate:this.myForm.value['date'],
-        isArchived:false,
-        isCompleted:false,
-        selected:false
+      let newTodo: Itodo = {
+        description: this.myForm.value['description'],
+        title: this.myForm.value['title'],
+        endDate: this.myForm.value['date'],
+        isArchived: false,
+        isCompleted: false,
+        selected: false
       }
       this.dataservice.addNewTodo(newTodo);
       this.dialog.closeAll();
@@ -45,4 +47,3 @@ export class NewTodoComponent implements OnInit {
   }
 
 }
- 

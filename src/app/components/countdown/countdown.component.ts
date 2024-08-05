@@ -1,48 +1,77 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-countdown',
   templateUrl: './countdown.component.html',
   styleUrls: ['./countdown.component.scss']
 })
-export class CountdownComponent implements OnInit {
+export class CountdownComponent implements OnInit, OnDestroy {
+
   refreshIntervalId: any;
-  @Input() date:any;
-  displayTime: string='00:00:00';
-  currentTime:number;
+  private _date: any;
+  @Input() set date(date: any) {
+    this._date = date;
+    this.setNewTimeout();
+  }
+  get date() {
+    return this._date
+  }
+  displayTime: string;
+  currentTime: number;
+
+  millisToSeconds: number = 1000;
+  secondsToMinutes: number = 60;
+  minutesToHours: number = 60;
+  hoursToDay: number = 24;
+
+  private subscription: Subscription = new Subscription();
 
   constructor() { }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
 
 
 
   ngOnInit(): void {
-   
+
+  }
+
+  setNewTimeout() {
+
     let res: Date = new Date(this.date);
-    let current:Date=new Date();
-    if(res>current){
-    this.currentTime=res.getTime()-current.getTime();
-this.refreshIntervalId =setInterval(()=>this.setDisplayTime(),1000)
-  }
-  }
-  setDisplayTime(): void {
-    this.currentTime-=1000;
-    if(this.currentTime<0){
-clearInterval(this.refreshIntervalId);
-return;
+    let current: Date = new Date();
+    if (res > current) {
+      this.currentTime = res.getTime() - current.getTime();
+      this.currentTime /= this.millisToSeconds;
+      this.subscription.add(
+        interval(1000).subscribe(() => this.setDisplayTime())
+      )
     }
-    let hours=formatZeros(this.currentTime/1000/60/60);
-    let minutes=formatZeros((this.currentTime-(hours*60*60*1000))/1000/60);
-    let seconds=formatZeros(this.currentTime-(hours*60*60*1000)-(minutes*60*1000));
-    this.displayTime=`${hours}:${minutes}:${seconds}`;
+    else
+      this.displayTime = '00:00:00';
+  }
+
+  setDisplayTime(): void {
+    this.currentTime -= 1;
+    if (this.currentTime < 0) {
+      return;
+    }
+    let days = Math.floor(this.currentTime / this.secondsToMinutes / this.minutesToHours / this.hoursToDay);
+    let hours = Math.floor((this.currentTime / this.secondsToMinutes / this.minutesToHours) % this.hoursToDay);
+    let minutes = Math.floor((this.currentTime / this.secondsToMinutes) % this.minutesToHours);
+    let seconds = Math.floor(this.currentTime % this.secondsToMinutes);
+    this.displayTime = `${formatZeros(days)}:${formatZeros(hours)}:${formatZeros(minutes)}:${formatZeros(seconds)}`;
   }
 
 }
 
-function formatZeros(number){
-  if(number<0)
+function formatZeros(number) {
+  if (number < 0)
     return '00';
-if(number<10)
-  return number+'0';
-return number;
+  if (number < 10)
+    return '0' + number;
+  return number;
 }
 
