@@ -8,11 +8,10 @@ import { interval, Subscription } from 'rxjs';
 })
 export class CountdownComponent implements OnInit, OnDestroy {
 
-  refreshIntervalId: any;
   private _date: any;
   @Input() set date(date: any) {
     this._date = date;
-    this.setNewTimeout();
+    this.resetCountDown();
   }
   get date() {
     return this._date
@@ -25,19 +24,18 @@ export class CountdownComponent implements OnInit, OnDestroy {
   minutesToHours: number = 60;
   hoursToDay: number = 24;
 
-  private subscription: Subscription = new Subscription();
+  private subscription: Subscription;
 
   constructor() { }
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-
 
   ngOnInit(): void {
-    this.subscription.add(
-      interval(1000).subscribe(() => this.setDisplayTime())
-    )
+    this.startCountdown();
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   setNewTimeout() {
@@ -45,26 +43,44 @@ export class CountdownComponent implements OnInit, OnDestroy {
     let res: Date = new Date(this.date);
     let current: Date = new Date();
     if (res > current) {
-      this.displayTime ='';
+      this.displayTime = '';
       this.currentTime = res.getTime() - current.getTime();
       this.currentTime /= this.millisToSeconds;
     }
-    else{
+    else {
       this.displayTime = '00:00:00:00';
-    this.currentTime=0;
+      this.currentTime = 0;
     }
   }
 
   setDisplayTime(): void {
-    this.currentTime -= 1;
-    if (this.currentTime < 0) {
+    if (this.currentTime <= 0) {
+      this.displayTime = '00:00:00:00';
+      this.currentTime = 0;
+      this.subscription.unsubscribe(); // Stop the interval when countdown ends
       return;
     }
+    this.currentTime -= 1;
     let days = Math.floor(this.currentTime / this.secondsToMinutes / this.minutesToHours / this.hoursToDay);
     let hours = Math.floor((this.currentTime / this.secondsToMinutes / this.minutesToHours) % this.hoursToDay);
     let minutes = Math.floor((this.currentTime / this.secondsToMinutes) % this.minutesToHours);
     let seconds = Math.floor(this.currentTime % this.secondsToMinutes);
     this.displayTime = `${formatZeros(days)}:${formatZeros(hours)}:${formatZeros(minutes)}:${formatZeros(seconds)}`;
+  }
+  private startCountdown(): void {
+    this.subscription.add(
+      interval(1000).subscribe(() => this.setDisplayTime())
+    );
+  }
+
+  resetCountDown() {
+    if (this.subscription)
+      this.subscription.unsubscribe();
+    this.subscription = new Subscription();
+    this.setNewTimeout();
+    if (this.currentTime > 0) {
+      this.startCountdown(); // Resubscribe to the new interval if needed
+    }
   }
 
 }
