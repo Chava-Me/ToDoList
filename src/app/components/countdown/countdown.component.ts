@@ -35,7 +35,9 @@ export class CountdownComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
+    this.subscription.add(
+      interval(1000).subscribe(() => this.setDisplayTime())
+    )
   }
 
   setNewTimeout() {
@@ -43,14 +45,14 @@ export class CountdownComponent implements OnInit, OnDestroy {
     let res: Date = new Date(this.date);
     let current: Date = new Date();
     if (res > current) {
+      this.displayTime ='';
       this.currentTime = res.getTime() - current.getTime();
       this.currentTime /= this.millisToSeconds;
-      this.subscription.add(
-        interval(1000).subscribe(() => this.setDisplayTime())
-      )
     }
-    else
-      this.displayTime = '00:00:00';
+    else{
+      this.displayTime = '00:00:00:00';
+    this.currentTime=0;
+    }
   }
 
   setDisplayTime(): void {
