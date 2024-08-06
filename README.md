@@ -1,3 +1,7 @@
+# About the app
+
+this app was buit in purpose to learn and understand some angular advanced features, and practice using Angular Material library. 
+
 # ToDoApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.0.
